@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}
+Последние обновления на странице авторов
+{% endblock %}
+{% block content %}
+{% include 'posts/includes/switcher.html' %}
+{% for post in page_obj %}
+{% include 'posts/includes/post_card.html' %}
+{% endfor %} 
+{% include 'posts/includes/paginator.html' %}
+{% endblock %}      
