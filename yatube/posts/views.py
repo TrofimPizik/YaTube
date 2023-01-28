@@ -129,7 +129,7 @@ def profile_follow(request, username):
         if not following:
             Follow.objects.create(user=request.user, author=author)
             return redirect('posts:follow_index', permanent=True)
-    return redirect('posts:follow_index', permanent=True)    
+    return redirect('posts:follow_index', permanent=True)
 
 
 @login_required
