@@ -215,6 +215,31 @@ class Test(TestCase):
                 reverse('posts:follow_index')).context['page_obj']
         )
 
+    # Проверяем подписку
+    def test_new_following(self):
+        follow_count = Follow.objects.count()
+        self.authorized_client_unfollower.get(reverse(
+            'posts:profile_follow',
+            kwargs={'username': self.user_author.username}))
+        self.assertEqual(Follow.objects.count(), follow_count + 1)
+
+    # Проверяем отписку
+    def test_unfollowing(self):
+        follow_count = Follow.objects.count()
+        self.authorized_client_follower.get(reverse(
+            'posts:profile_unfollow',
+            kwargs={'username': self.user_author.username}))
+        self.assertEqual(Follow.objects.count(), follow_count - 1)
+
+    # Проверяем, что невозможно повторно подписаться
+    # если уже существует подписка
+    def test_refollowing(self):
+        follow_count = Follow.objects.count()
+        self.authorized_client_follower.get(reverse(
+            'posts:profile_follow',
+            kwargs={'username': self.user_author.username}))
+        self.assertEqual(Follow.objects.count(), follow_count)
+
     # Проверяем, что пост не попал в группу, для которой не был предназначен
     def test_new_post_in_the_wrong_group(self):
         self.assertNotIn(
