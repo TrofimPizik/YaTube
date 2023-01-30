@@ -222,6 +222,9 @@ class Test(TestCase):
             'posts:profile_follow',
             kwargs={'username': self.user_author.username}))
         self.assertEqual(Follow.objects.count(), follow_count + 1)
+        self.assertTrue(Follow.objects.filter(
+            author=self.user_author, user=self.user_unfollower
+        ).exists())
 
     # Проверяем отписку
     def test_unfollowing(self):
